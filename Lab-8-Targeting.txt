@@ -1,0 +1,18 @@
+LAb -08 -SQL Injection Attack,  querying the database type and version on MySQL and Microsoft
+
+SQL Injection - Product Category
+
+End Goal : Display the database version
+
+Analysis: 
+1. Find out the number of columns
+
+' order by 1-- Not working
+' order by 1# -not working
+
+3 Columns in the table
+2. Find out the column type
+Both are string types
+
+3. Find the version
+8.0.42-0ubuntu0.20.04.1

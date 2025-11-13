@@ -1,0 +1,7 @@
+Lab 13 -Blind SQL Injection with time delays
+
+Vulnerable parameter -Tracker Cookie
+
+End Goal:
+-to prove that the ield is vulnerable to blind sql injection(time based)
+

